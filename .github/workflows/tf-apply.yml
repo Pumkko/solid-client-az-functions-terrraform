@@ -42,3 +42,19 @@ jobs:
         with:
           run: ${{ steps.apply-run.outputs.run_id }}
           comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
+  deploy-static-site: 
+    name: 'Deploy Solid Client'
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.SOLID_STATIC_SITE_DEPLOYMENT_TOKEN }}
+          action: "upload"
+          ###### Repository/Build Configurations ######
+          app_location: "./solid-client" # App source code path relative to repository root
+          api_location: "AzFunctionsApi" # Api source code path relative to repository root - optional
+          output_location: "public" # Built app content directory, relative to app_location - optional
+          ###### End of Repository/Build Configurations ######
