@@ -34,6 +34,10 @@ variable "ARM_SUBSCRIPTION_ID" {
   type = string
 }
 
+variable "GITHUB_TOKEN" {
+  type = string
+}
+
 provider "azurerm" {
 
   client_id = var.ARM_CLIENT_ID
@@ -47,7 +51,7 @@ provider "azurerm" {
 }
 
 provider "github" {
-  token = #{TERRAFORM_GITHUB_TOKEN}#
+  token = var.GITHUB_TOKEN
 }
 
 # Create a resource group
