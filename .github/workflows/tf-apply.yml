@@ -54,7 +54,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.SOLID_STATIC_SITE_DEPLOYMENT_TOKEN }}
           action: "upload"
           ###### Repository/Build Configurations ######
-          app_location: "./solid-client" # App source code path relative to repository root
+          app_location: "solid-client" # App source code path relative to repository root
           api_location: "AzFunctionsApi" # Api source code path relative to repository root - optional
           output_location: "public" # Built app content directory, relative to app_location - optional
           ###### End of Repository/Build Configurations ######
