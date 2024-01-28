@@ -17,6 +17,10 @@ provider "azurerm" {
   features {}
 }
 
+provider "github" {
+  token = #{TERRAFORM_GITHUB_TOKEN}#
+}
+
 variable "github_repository_name" {
   type = string
 }
