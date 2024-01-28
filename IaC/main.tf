@@ -13,16 +13,45 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  features {}
-}
-
-provider "github" {
-  token = #{TERRAFORM_GITHUB_TOKEN}#
-}
 
 variable "github_repository_name" {
   type = string
+}
+
+variable "ARM_CLIENT_ID" {
+  type = string
+}
+
+variable "ARM_CLIENT_SECRET" {
+  type = string
+}
+
+variable "ARM_TENANT_ID" {
+  type = string
+}
+
+variable "ARM_SUBSCRIPTION_ID" {
+  type = string
+}
+
+variable "GITHUB_TOKEN" {
+  type = string
+}
+
+provider "azurerm" {
+
+  client_id = var.ARM_CLIENT_ID
+  client_secret = var.ARM_CLIENT_SECRET
+  tenant_id = var.ARM_TENANT_ID
+  subscription_id = var.ARM_SUBSCRIPTION_ID
+
+  features {
+    
+  }
+}
+
+provider "github" {
+  token = var.GITHUB_TOKEN
 }
 
 # Create a resource group

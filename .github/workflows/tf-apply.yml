@@ -1,0 +1,60 @@
+name: "Terraform Apply"
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  TF_CLOUD_ORGANIZATION: "Pumkko"
+  TF_API_TOKEN: "${{ secrets.TF_CLOUD_API_TOKEN }}"
+  TF_WORKSPACE: "terraform-github-actions"
+  CONFIG_DIRECTORY: "./IaC"
+
+jobs:
+  terraform:
+    name: "Terraform Apply"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload Configuration
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
+        id: apply-upload
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: ${{ env.CONFIG_DIRECTORY }}
+
+      - name: Create Apply Run
+        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
+        id: apply-run
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
+
+      - name: Apply
+        uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
+        if: fromJSON(steps.apply-run.outputs.payload).data.attributes.actions.IsConfirmable
+        id: apply
+        with:
+          run: ${{ steps.apply-run.outputs.run_id }}
+          comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
+  deploy-static-site: 
+    name: 'Deploy Solid Client'
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.SOLID_STATIC_SITE_DEPLOYMENT_TOKEN }}
+          action: "upload"
+          ###### Repository/Build Configurations ######
+          app_location: "./solid-client" # App source code path relative to repository root
+          api_location: "AzFunctionsApi" # Api source code path relative to repository root - optional
+          output_location: "public" # Built app content directory, relative to app_location - optional
+          ###### End of Repository/Build Configurations ######
