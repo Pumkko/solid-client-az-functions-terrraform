@@ -8,12 +8,11 @@ on:
 env:
   TF_CLOUD_ORGANIZATION: "Pumkko"
   TF_API_TOKEN: "${{ secrets.TF_CLOUD_API_TOKEN }}"
-  TF_WORKSPACE: "learn-terraform-github-actions"
+  TF_WORKSPACE: "terraform-github-actions"
   CONFIG_DIRECTORY: "./IaC"
 
 jobs:
   terraform:
-    if: github.repository != 'hashicorp-education/learn-terraform-github-actions'
     name: "Terraform Apply"
     runs-on: ubuntu-latest
     permissions:
