@@ -50,6 +50,30 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Deploy app
+        run: |
+          pnpm i --frozen-lockfile && pnpm run build
+
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -57,7 +81,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.SOLID_STATIC_SITE_DEPLOYMENT_TOKEN }}
           action: "upload"
           ###### Repository/Build Configurations ######
-          app_location: "./solid-client" # App source code path relative to repository root
+          skip_app_build: true
+          app_location: "./solid-client/dist" # App source code path relative to repository root
           api_location: "AzFunctionsApi" # Api source code path relative to repository root - optional
-          output_location: "public" # Built app content directory, relative to app_location - optional
           ###### End of Repository/Build Configurations ######
