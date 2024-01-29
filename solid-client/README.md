@@ -1,28 +1,13 @@
-## Usage
+# What did i Learn
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
+## Terraform 
+I wanted to try if I could setup a static web app using Terraform, retrieve the deployment token, set it as a github repo secrets
+and use it to deploy the web app. All in the same github workflow.
+I did not work
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run dev`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+The secret is created without problem but it's not known by the workflow at first, the worfklow has to be restarted
+I could not find a action to refresh the workflow environment variables.
 
 ## Deployment
-
-Learn more about deploying your application with the [documentations](https://vitejs.dev/guide/static-deploy.html)
+It seems like there's a problem right now with SWA deployment : https://github.com/Azure/static-web-apps/issues/1404
+Furthermore i need to upgrade my SWA because the free tier does not allow backend API
