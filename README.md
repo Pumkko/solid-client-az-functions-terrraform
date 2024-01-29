@@ -10,4 +10,5 @@ I could not find a action to refresh the workflow environment variables.
 
 ## Deployment
 It seems like there's a problem right now with SWA deployment : https://github.com/Azure/static-web-apps/issues/1404
-Furthermore i need to upgrade my SWA because the free tier does not allow backend API
+~~Furthermore i need to upgrade my SWA because the free tier does not allow backend API~~
+EDIT : I was wrong : You can add your own API using a free SWA it's the "Bring your own" that's unavailable
